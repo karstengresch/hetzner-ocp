@@ -124,9 +124,9 @@
   vars_files:
   - vars/guests.yml
   tasks:
-  - name: Wait 10 secs for guests to shutdown
+  - name: Wait 60 secs for guests to shutdown
     pause:
-      seconds: 10
+      seconds: 60
   - name: Start all VMs
     virt:
       command: start
