@@ -47,7 +47,7 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 openshift_master_default_subdomain=apps.{{ip_addr}}.xip.io
 
 # default project node selector
-osm_default_node_selector='purpose=primary'
+osm_default_node_selector='region=primary'
 
 # OpenShift Router Options
 openshift_hosted_router_selector='region=infra'
@@ -61,8 +61,9 @@ openshift_hosted_metrics_deploy=true
 openshift_hosted_metrics_public_url=https://metrics.apps.{{ip_addr}}.xip.io/hawkular/metrics
 openshift_metrics_hawkular_hostname=metrics.apps.{{ip_addr}}.xip.io
 openshift_metrics_cassandra_replicas=1
-openshift_metrics_cassandra_limits_memory=2Gi
+openshift_metrics_cassandra_limits_memory=1Gi
 openshift_metrics_hawkular_replicas=1
+openshift_metrics_hawkular_limits_memory=1Gi
 openshift_metrics_duration=5
 openshift_metrics_cassandra_storage_type=emptydir
 
@@ -79,11 +80,16 @@ openshift_logging_master_url=master01
 openshift_logging_public_master_url=master.{{ip_addr}}.xip.io
 openshift_logging_curator_default_days=7
 openshift_logging_kibana_hostname=logging.apps.{{ip_addr}}.xip.io
+openshift_logging_es_memory_limit=1Gi
 
 openshift_logging_curator_nodeselector={"region":"infra"}
 openshift_logging_es_nodeselector={"region":"infra"}
 openshift_logging_fluentd_nodeselector={"fluentd":"true"}
 openshift_logging_kibana_nodeselector={"region":"infra"}
+
+# OpenShift Template Service Broker
+openshift_template_service_broker_namespaces=['openshift']
+
 
 [masters]
 master01
