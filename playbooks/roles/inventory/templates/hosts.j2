@@ -18,7 +18,7 @@ containerized=false
 os_firewall_use_firewalld=True
 
 # Skip env validation
-openshift_disable_check=disk_availability,memory_availability
+openshift_disable_check=disk_availability,memory_availability,docker_storage,package_availability,package_version,docker_image_availability
 
 # Enable cockpit
 osm_use_cockpit=true
