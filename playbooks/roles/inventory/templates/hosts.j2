@@ -5,6 +5,7 @@
 masters
 nodes
 etcd
+glusterfs
 
 # Set variables common for all OSEv3 hosts
 [OSEv3:vars]
@@ -90,12 +91,20 @@ openshift_logging_kibana_nodeselector={"region":"infra"}
 # OpenShift Template Service Broker
 openshift_template_service_broker_namespaces=['openshift']
 
+# Enable CNS (glusterfs) as default storage provider
+openshift_storage_glusterfs_namespace=glusterfs
+openshift_storage_glusterfs_name=storage
 
 [masters]
 master01
 
 [etcd]
 master01
+
+[glusterfs]
+node01 glusterfs_ip=192.168.0.31 glusterfs_devices='[ "/dev/sdc" ]'
+node02 glusterfs_ip=192.168.0.32 glusterfs_devices='[ "/dev/sdc" ]'
+node03 glusterfs_ip=192.168.0.33 glusterfs_devices='[ "/dev/sdc" ]'
 
 [nodes]
 master01 openshift_schedulable=false

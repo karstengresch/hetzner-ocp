@@ -19,7 +19,7 @@ guests:
   disk_os_size: 40g
 - name: infranode01
   cpu: 1
-  mem: 4096
+  mem: 8192
   virt_type: kvm
   virt_hypervisor: hvm
   network: bridge=virbr0
@@ -28,7 +28,7 @@ guests:
   disk_os_size: 40g
 - name: infranode02
   cpu: 1
-  mem: 4096
+  mem: 8192
   virt_type: kvm
   virt_hypervisor: hvm
   network: bridge=virbr0
@@ -37,7 +37,7 @@ guests:
   disk_os_size: 40g
 - name: node01
   cpu: 1
-  mem: 4096
+  mem: 8192
   virt_type: kvm
   virt_hypervisor: hvm
   network: bridge=virbr0
@@ -46,7 +46,7 @@ guests:
   disk_os_size: 40g
 - name: node02
   cpu: 1
-  mem: 4096
+  mem: 8192
   virt_type: kvm
   virt_hypervisor: hvm
   network: bridge=virbr0
@@ -55,7 +55,7 @@ guests:
   disk_os_size: 40g
 - name: node03
   cpu: 1
-  mem: 4096
+  mem: 8192
   virt_type: kvm
   virt_hypervisor: hvm
   network: bridge=virbr0
