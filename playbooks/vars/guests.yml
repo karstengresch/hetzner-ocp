@@ -18,7 +18,7 @@ guests:
   os_variant: rhel7.4
   disk_os_size: 40g
 - name: infranode01
-  cpu: 1
+  cpu: 2
   mem: 8192
   virt_type: kvm
   virt_hypervisor: hvm
@@ -27,7 +27,7 @@ guests:
   os_variant: rhel7.4
   disk_os_size: 40g
 - name: infranode02
-  cpu: 1
+  cpu: 2
   mem: 8192
   virt_type: kvm
   virt_hypervisor: hvm
