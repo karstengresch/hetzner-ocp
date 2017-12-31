@@ -1,3 +1,5 @@
+install haproxy
+
 fix haproxy
 fix glusterip in inventory
 add gluster disks to nodes
