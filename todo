@@ -1,0 +1,9 @@
+fix haproxy
+fix glusterip in inventory
+add gluster disks to nodes
+
+
+set default storageclass
+fix ansible-broker storage
+fix template broker labels & selectors
+
