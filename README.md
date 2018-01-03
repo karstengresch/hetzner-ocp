@@ -92,13 +92,13 @@ Copy below content to that file as an template
 DRIVE1 /dev/sda
 DRIVE2 /dev/sdb
 SWRAID 1
-SWRAIDLEVEL 1
+SWRAIDLEVEL 0
 BOOTLOADER grub
 HOSTNAME CentOS-74-64-minimal
 PART /boot ext3     512M
 PART lvm   vg0       all
 
-LV vg0   root   /       ext4     200G
+LV vg0   root   /       ext4     1000G
 LV vg0   swap   swap    swap       5G
 LV vg0   tmp    /tmp    ext4      10G
 LV vg0   home   /home   ext4      40G
@@ -113,8 +113,8 @@ There are some things that you will probably have to changes
 * If you have a single disk remove line `DRIVE2` and lines `SWRAID*`
 * If you have more than two disks add `DRIVE3`...
 * If you dont need raid just change `SWRAID` to `0`
-* Valid values for `SWRAIDLEVEL` are 0, 1 and 10. 1 means mirrored disks
-* Configure LV sizes so that it matches your total disk size. In this example I have 2 x 2Tb disks RAID 1 so total diskspace available is 2Tb (1863 Gb)
+* Valid values for `SWRAIDLEVEL` are 0, 1 and 10.
+* Configure LV sizes so that it matches your total disk size. In this example I have 2 x 2Tb disks RAID 0 so total diskspace available is 4Tb
 * If you like you can add more volume groups and logical volumes.
 
 When you are happy with file content, save and exit the editor via `:wq` and start installation with the following command
@@ -145,6 +145,12 @@ You need to add ports 80, 443 and 8443 to the rules and also block 111. If you d
 ![](images/firewall_target.png)
 
 
+## Disable SSH Password Authentication
+
+To increase security on our root server we will disable password auth for ssh
+
+Set 'PasswordAuthentication no' in /etc/ssh/sshd_config. Restart sshd
+
 
 ## Initialize tools
 
@@ -157,9 +163,9 @@ Install ansible and git
 You are now ready to clone this project to your CentOS system.
 
 ```
-git clone https://github.com/RedHat-EMEA-SSA-Team/hetzner-ocp.git
+git clone https://github.com/andyneeb/hetzner-ocp.git
 ```
-We are now ready to install `libvirt`as our hypervizor, provision VMs and prepare those for OCP.
+We are now ready to install `libvirt`as our hypervisor, provision VMs and prepare those for OCP.
 
 
 ## Download RHEL 7.4 cloud image from access.redhat.com
@@ -174,7 +180,7 @@ Downlaod image
 wget -O /root/rhel-kvm.qcow2 PASTE_URL_HERE
 ```
 
-With our hypervizor installed and ready, we can now proceed with the creation of the VMs, which will then host our OpenShift installation.
+With our hypervisor installed and ready, we can now proceed with the creation of the VMs, which will then host our OpenShift installation.
 
 ## Define, provision and prepare guest
 
@@ -183,7 +189,10 @@ Check ```playbook/vars/guests.yml``` and modify it to correspond your environmen
 * bastion
 * master01
 * infranode01
+* infranode02
 * node01
+* node02
+* node03
 
 ![](images/architecture.png)
 
@@ -192,50 +201,73 @@ Here is a sample of a guest definition
 guests:
 - name: bastion
   cpu: 1
-  mem: 1024
+  mem: 4096
   virt_type: kvm
   virt_hypervisor: hvm
   network: bridge=virbr0
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
-  disk_data_size: 200g
 - name: master01
   cpu: 1
-  mem: 8096
+  mem: 8192
   virt_type: kvm
   virt_hypervisor: hvm
   network: bridge=virbr0
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
-  disk_data_size: 100g
 - name: infranode01
-  cpu: 1
-  mem: 8096
+  cpu: 2
+  mem: 8192
   virt_type: kvm
   virt_hypervisor: hvm
   network: bridge=virbr0
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
-  disk_data_size: 100g
+- name: infranode02
+  cpu: 2
+  mem: 8192
+  virt_type: kvm
+  virt_hypervisor: hvm
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 40g
 - name: node01
   cpu: 1
-  mem: 8096
+  mem: 8192
   virt_type: kvm
   virt_hypervisor: hvm
   network: bridge=virbr0
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
-  disk_data_size: 100g
+- name: node02
+  cpu: 1
+  mem: 8192
+  virt_type: kvm
+  virt_hypervisor: hvm
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 40g
+- name: node03
+  cpu: 1
+  mem: 8192
+  virt_type: kvm
+  virt_hypervisor: hvm
+  network: bridge=virbr0
+  os_type: linux
+  os_variant: rhel7.4
+  disk_os_size: 40g
 
 ```
 
 Basically you need to change only num of VMs and/or cpu and mem values. If
 
-Provision VMs and prepare them for OCP. Password for all hosts is `p`.
+Provision VMs and prepare them for OCP. 
 
 
 ```
@@ -246,18 +278,34 @@ Provision VMs and prepare them for OCP. Password for all hosts is `p`.
 
 Provisioning of the hosts take a while and they are in running state until provisioning and preparations is finnished. Maybe time for another cup of coffee?
 
-When playbook is finished successfully you should have 4 VMs running.
+When playbook is finished successfully you should have 7 VMs running.
 
 ```
 [root@CentOS-73-64-minimal hetzner-ocp]# virsh list
  Id    Name                           State
 ----------------------------------------------------
- 34    bastion                        running
- 35    master01                       running
- 36    infranode01                    running
- 37    node01                         running
+ 01    bastion                        running
+ 02    master01                       running
+ 03    infranode01                    running
+ 04    infranode02                    running
+ 05    node01                         running
+ 06    node02                         running
+ 07    node03                         running
 
 ```
+
+## Install and configure haproxy on root server
+
+This will most likely be added to the playbook soon but is a manual step for now.
+
+```
+[root@CentOS-73-64-minimal hetzner-ocp]# yum install -y haproxy
+
+[root@CentOS-73-64-minimal hetzner-ocp]# cp haproxy.conf /etc/haproxy/haproxy.conf
+
+```
+
+Set proper IP adress for master / infranodes in haproxy.conf (get values from /etc/hosts)
 
 
 ## Install OCP
@@ -266,6 +314,8 @@ Installation of OCP is done on bastion host. So you need to ssh to bastion
 ```
 [root@CentOS-73-64-minimal hetzner-ocp]# ssh bastion
 ```
+
+Set correct glusterfs_ip in /etc/ansible/hosts ([glusterfs] section)
 
 Installation is done with normal OCP installation playbooks. You can start installation on **bastion** with following command
 

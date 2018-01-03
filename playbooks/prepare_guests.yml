@@ -158,3 +158,10 @@
   tasks:
   roles:
   - { role: docker_setup}
+- name: Prepare nodes for CNS
+  gather_facts: False
+  hosts: node0*
+  tasks:
+  roles:
+  - { role: cns_setup}
+
