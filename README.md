@@ -157,7 +157,7 @@ Set 'PasswordAuthentication no' in /etc/ssh/sshd_config. Restart sshd
 Install ansible and git
 
 ```
-[root@CentOS-73-64-minimal ~]# yum install -y ansible git wget
+[root@CentOS-74-64-minimal ~]# yum install -y ansible git wget
 ```
 
 You are now ready to clone this project to your CentOS system.
@@ -271,9 +271,9 @@ Provision VMs and prepare them for OCP.
 
 
 ```
-[root@CentOS-73-64-minimal ~]# cd hetzner-ocp
-[root@CentOS-73-64-minimal hetzner-ocp]# export ANSIBLE_HOST_KEY_CHECKING=False
-[root@CentOS-73-64-minimal hetzner-ocp]# ansible-playbook playbooks/setup.yml
+[root@CentOS-74-64-minimal ~]# cd hetzner-ocp
+[root@CentOS-74-64-minimal hetzner-ocp]# export ANSIBLE_HOST_KEY_CHECKING=False
+[root@CentOS-74-64-minimal hetzner-ocp]# ansible-playbook playbooks/setup.yml
 ```
 
 Provisioning of the hosts take a while and they are in running state until provisioning and preparations is finnished. Maybe time for another cup of coffee?
@@ -281,7 +281,7 @@ Provisioning of the hosts take a while and they are in running state until provi
 When playbook is finished successfully you should have 7 VMs running.
 
 ```
-[root@CentOS-73-64-minimal hetzner-ocp]# virsh list
+[root@CentOS-74-64-minimal hetzner-ocp]# virsh list
  Id    Name                           State
 ----------------------------------------------------
  01    bastion                        running
@@ -299,9 +299,9 @@ When playbook is finished successfully you should have 7 VMs running.
 This will most likely be added to the playbook soon but is a manual step for now.
 
 ```
-[root@CentOS-73-64-minimal hetzner-ocp]# yum install -y haproxy
+[root@CentOS-74-64-minimal hetzner-ocp]# yum install -y haproxy
 
-[root@CentOS-73-64-minimal hetzner-ocp]# cp haproxy.conf /etc/haproxy/haproxy.conf
+[root@CentOS-74-64-minimal hetzner-ocp]# cp haproxy.conf /etc/haproxy/haproxy.conf
 
 ```
 
@@ -312,7 +312,7 @@ Set proper IP adress for master / infranodes in haproxy.conf (get values from /e
 
 Installation of OCP is done on bastion host. So you need to ssh to bastion
 ```
-[root@CentOS-73-64-minimal hetzner-ocp]# ssh bastion
+[root@CentOS-74-64-minimal hetzner-ocp]# ssh cloud-user@bastion
 ```
 
 Set correct glusterfs_ip in /etc/ansible/hosts ([glusterfs] section)
@@ -320,15 +320,15 @@ Set correct glusterfs_ip in /etc/ansible/hosts ([glusterfs] section)
 Installation is done with normal OCP installation playbooks. You can start installation on **bastion** with following command
 
 ```
-[root@localhost ~]# ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
+[cloud-user@localhost ~]# ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
 ```
 
 When installation is done you can create new admin user and add hostpath persistent storage to registry with post install playbook.
 
-Exit from bastion and execute following on **hypervizor**.
+Exit from bastion and execute following on **hypervisor**.
 
 ```
-[root@CentOS-73-64-minimal hetzner-ocp]# ansible-playbook hetzner-ocp/playbooks/post.yml
+[root@CentOS-74-64-minimal hetzner-ocp]# ansible-playbook hetzner-ocp/playbooks/post.yml
 ```
 
 ## Login to Openshift
