@@ -4,6 +4,8 @@ This environment has been created for the sole purpose of providing an easy to d
 This install will create a 'Minimal Viable Setup', which anyone can extend to
 their needs and purpose.
 
+This is based on the excellent work of Tero Ahonen @ Red Hat, it extends the number of systems, uses OCP 3.7, integrates CNS (gluster), installs full logging & metrics and applies some minor tweaks. It also uses haproxy on the root server as external loadbalancer.
+
 Use at your own please and risk!
 
 Openshift Container Platform needs valid Red Hat subscription for Red Hat OpenShift Container Platform! And access to access.redhat.com web site is required to download RHEL 7.x cloud images.
