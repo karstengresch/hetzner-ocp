@@ -8,6 +8,7 @@ guests:
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
+  ip_address: 192.168.122.99
 - name: master01
   cpu: 1
   mem: 8192
@@ -17,6 +18,7 @@ guests:
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
+  ip_address: 192.168.122.100
 - name: infranode01
   cpu: 2
   mem: 8192
@@ -26,6 +28,7 @@ guests:
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
+  ip_address: 192.168.122.101
 - name: infranode02
   cpu: 2
   mem: 8192
@@ -35,6 +38,7 @@ guests:
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
+  ip_address: 192.168.122.102
 - name: node01
   cpu: 1
   mem: 8192
@@ -44,6 +48,7 @@ guests:
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
+  ip_address: 192.168.122.201
 - name: node02
   cpu: 1
   mem: 8192
@@ -53,6 +58,7 @@ guests:
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
+  ip_address: 192.168.122.202
 - name: node03
   cpu: 1
   mem: 8192
@@ -62,3 +68,4 @@ guests:
   os_type: linux
   os_variant: rhel7.4
   disk_os_size: 40g
+  ip_address: 192.168.122.203

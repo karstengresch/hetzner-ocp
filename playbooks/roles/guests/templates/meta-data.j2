@@ -1,3 +1,12 @@
 # {{ ansible_managed }}
 instance-id: {{item.name}}
-local-hostname: {{item.name}}
+local-hostname: {{item.name}
+
+network-interfaces: |
+  auto lo
+  iface lo inet loopback
+
+  iface eth0 inet static
+    address {{item.ip_address}}
+    netmask 255.255.255.0
+    gateway 192.168.122.255
